@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 export const ParaphraseTextareaContainer = styled(Box)<BoxProps>(
   ({ theme }) => ({
     width: "100%",
-    minHeight: "350px",
+    minHeight: "336px",
     backgroundColor: "#E8EAF6",
     display: "flex",
     flexDirection: "column",

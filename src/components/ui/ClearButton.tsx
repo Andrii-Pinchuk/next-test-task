@@ -7,7 +7,7 @@ export const ClearButton = styled(Button)<ButtonProps>(({ theme }) => ({
   borderRadius: "31px",
   height: "48px",
   padding: theme.spacing(3, 4),
-  fontSize: theme.customTokens.typography.fontSize.md,
+  fontSize: theme.customTokens.typography.fontSize.sm,
   fontWeight: theme.customTokens.typography.fontWeight.medium,
   textTransform: "none",
   backgroundColor: theme.customTokens.colors.neutral80,
