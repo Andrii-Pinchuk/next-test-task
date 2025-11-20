@@ -1,69 +1,109 @@
-import { Container, Stack } from "@mui/material";
-import Image from "next/image";
+"use client";
+
+import CloseIcon from "@mui/icons-material/Close";
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import { useState } from "react";
 import {
-  BodyText,
-  ContentStack,
-  InlineLink,
+  ActionsContainer,
+  ButtonsContainer,
+  ClearButton,
+  ErrorMessage,
+  MainTitle,
   PageContainer,
-  PageTitle,
-  RoundedButton,
-  TextSection,
+  ParaphraseActionButton,
+  ParaphrasePlaceholderText,
+  ParaphraseTextarea,
+  ParaphraseTextareaContainer,
+  SectionContainer,
+  SubmitButton,
+  Subtitle,
 } from "@/components/ui";
+import { SAMPLE_TEXT } from "@/constants/sampleText";
 
 export default function Home() {
+  const [text, setText] = useState("");
+  const [error, setError] = useState("Error message");
+
+  const handlePasteText = async () => {
+    try {
+      const clipboardText = await navigator.clipboard.readText();
+      setText(clipboardText);
+      setError("");
+    } catch (_err) {
+      setError("Failed to read clipboard. Please paste manually.");
+    }
+  };
+
+  const handleSampleText = () => {
+    setText(SAMPLE_TEXT);
+    setError("");
+  };
+
+  const handleClearInput = () => {
+    setText("");
+    setError("");
+  };
+
+  const handleParaphrase = () => {
+    // Will be implemented in step 3
+    console.log("Paraphrase clicked");
+  };
+
+  const isTextEmpty = text.trim().length === 0;
+
   return (
     <PageContainer>
-      <Container maxWidth="md">
-        <ContentStack spacing={8}>
-          <Image
-            src="/next.svg"
-            alt="Next.js logo"
-            width={100}
-            height={20}
-            priority
-          />
+      <MainTitle component="h1">AI Text Paraphraser by JustDone</MainTitle>
+      <Subtitle>
+        Transform your writing from good to great with our Paraphraser tool.
+      </Subtitle>
 
-          <TextSection spacing={3}>
-            <PageTitle variant="h3" component="h1">
-              To get started, edit the page.tsx file.
-            </PageTitle>
-
-            <BodyText variant="body1">
-              Looking for a starting point or more instructions? Head over to{" "}
-              <InlineLink href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app">
-                Templates
-              </InlineLink>{" "}
-              or the{" "}
-              <InlineLink href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app">
-                Learning
-              </InlineLink>{" "}
-              center.
-            </BodyText>
-          </TextSection>
-
-          <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-            <RoundedButton
-              variant="contained"
-              component="a"
-              href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Deploy Now
-            </RoundedButton>
-
-            <RoundedButton
+      <SectionContainer>
+        <ParaphraseTextareaContainer>
+          {isTextEmpty && (
+            <ParaphrasePlaceholderText>
+              Enter text here or upload file to humanize it.
+            </ParaphrasePlaceholderText>
+          )}
+          {isTextEmpty ? (
+            <ButtonsContainer>
+              <ParaphraseActionButton onClick={handlePasteText}>
+                <ContentPasteIcon sx={{ fontSize: 20, color: "#76777A" }} />
+                Paste text
+              </ParaphraseActionButton>
+              <ParaphraseActionButton onClick={handleSampleText}>
+                <DescriptionOutlinedIcon
+                  sx={{ fontSize: 20, color: "#76777A" }}
+                />
+                Sample text
+              </ParaphraseActionButton>
+            </ButtonsContainer>
+          ) : (
+            <ParaphraseTextarea
+              multiline
+              rows={14}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
               variant="outlined"
-              component="a"
-              href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Documentation
-            </RoundedButton>
-          </Stack>
-        </ContentStack>
-      </Container>
+              fullWidth
+            />
+          )}
+        </ParaphraseTextareaContainer>
+
+        <ActionsContainer>
+          {!isTextEmpty && (
+            <ClearButton onClick={handleClearInput} startIcon={<CloseIcon />}>
+              Clear input
+            </ClearButton>
+          )}
+          <SubmitButton disabled={isTextEmpty} onClick={handleParaphrase}>
+            Paraphrase
+          </SubmitButton>
+        </ActionsContainer>
+      </SectionContainer>
+
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </PageContainer>
   );
 }

@@ -1,14 +1,14 @@
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Inter } from "next/font/google";
 import ThemeRegistry from "@/components/ThemeRegistry";
 import "./globals.css";
 
-const roboto = Roboto({
+const inter = Inter({
   weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-roboto",
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className}>
+      <body className={inter.className}>
         <AppRouterCacheProvider options={{ key: "mui", enableCssLayer: true }}>
           <ThemeRegistry>{children}</ThemeRegistry>
         </AppRouterCacheProvider>
