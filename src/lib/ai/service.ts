@@ -1,6 +1,6 @@
-import {AI_DEFAULTS} from "./constants";
-import type {AIProvider} from "./types";
-import {AIProviderError} from "./types";
+import { AI_DEFAULTS } from "./constants";
+import type { AIProvider } from "./types";
+import { AIProviderError } from "./types";
 
 /**
  * Result of a paraphrase operation

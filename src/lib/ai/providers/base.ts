@@ -1,4 +1,4 @@
-import { AI_DEFAULTS } from "../constants";
+import { AI_DEFAULTS } from "@/lib/ai";
 import type { AIProvider, AIProviderConfig } from "../types";
 import { AIProviderError } from "../types";
 
@@ -44,23 +44,6 @@ export abstract class BaseAIProvider implements AIProvider {
   protected validateContent(content: unknown, contentType = "content"): void {
     if (!content) {
       throw new Error(`No ${contentType} in response`);
-    }
-  }
-
-  /**
-   * Parse error response from API
-   * @param response - Failed fetch response
-   * @returns Error message string
-   */
-  protected async parseErrorResponse(response: Response): Promise<string> {
-    try {
-      const errorData = await response.json();
-      return (
-        errorData.error?.message ||
-        `HTTP ${response.status}: ${response.statusText}`
-      );
-    } catch {
-      return `HTTP ${response.status}: ${response.statusText}`;
     }
   }
 }

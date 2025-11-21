@@ -6,10 +6,11 @@ import ThemeRegistry from "@/components/ThemeRegistry";
 import "./globals.css";
 
 const inter = Inter({
-  weight: ["300", "400", "500", "700"],
+  weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -56,11 +57,6 @@ export const metadata: Metadata = {
       "Transform your writing from good to great with our AI-powered paraphraser tool. Free online text paraphrasing with instant results.",
     creator: "@aiparaphraser",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-  },
   verification: {
     google: "google-site-verification-code",
     yandex: "yandex-verification-code",
@@ -68,6 +64,12 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://ai-paraphraser.onrender.com",
   },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({

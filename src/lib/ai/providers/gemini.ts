@@ -1,4 +1,4 @@
-import { AI_DEFAULTS, API_ENDPOINTS, PARAPHRASE_PROMPT } from "../constants";
+import { AI_DEFAULTS, API_ENDPOINTS, PARAPHRASE_PROMPT } from "@/lib/ai";
 import { BaseAIProvider } from "./base";
 
 export class GeminiProvider extends BaseAIProvider {
@@ -29,11 +29,6 @@ export class GeminiProvider extends BaseAIProvider {
           }),
         },
       );
-
-      if (!response.ok) {
-        const errorMessage = await this.parseErrorResponse(response);
-        throw new Error(errorMessage);
-      }
 
       const data = await response.json();
       const paraphrasedText = data.candidates?.[0]?.content?.parts?.[0]?.text;

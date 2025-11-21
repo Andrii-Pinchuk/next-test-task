@@ -1,4 +1,4 @@
-import { AI_DEFAULTS, API_ENDPOINTS, PARAPHRASE_PROMPT } from "../constants";
+import { AI_DEFAULTS, API_ENDPOINTS, PARAPHRASE_PROMPT } from "@/lib/ai";
 import { BaseAIProvider } from "./base";
 
 export class OpenAIProvider extends BaseAIProvider {
@@ -23,11 +23,6 @@ export class OpenAIProvider extends BaseAIProvider {
           temperature: AI_DEFAULTS.TEMPERATURE,
         }),
       });
-
-      if (!response.ok) {
-        const errorMessage = await this.parseErrorResponse(response);
-        throw new Error(errorMessage);
-      }
 
       const data = await response.json();
       const paraphrasedText = data.choices?.[0]?.message?.content;

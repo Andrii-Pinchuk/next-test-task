@@ -3,7 +3,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import { useState } from "react";
 import {
   ActionsContainer,
   ButtonsContainer,
@@ -19,68 +18,22 @@ import {
   SubmitButton,
   Subtitle,
 } from "@/components/ui";
-import { SAMPLE_TEXT } from "@/constants/sampleText";
+import { useParaphrase } from "@/hooks/useParaphrase";
 
 export default function Home() {
-  const [text, setText] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [paraphrasedText, setParaphrasedText] = useState("");
-
-  const handlePasteText = async () => {
-    try {
-      const clipboardText = await navigator.clipboard.readText();
-      setText(clipboardText);
-      setError("");
-    } catch (_err) {
-      setError("Failed to read clipboard. Please paste manually.");
-    }
-  };
-
-  const handleSampleText = () => {
-    setText(SAMPLE_TEXT);
-    setError("");
-  };
-
-  const handleClearInput = () => {
-    setText("");
-    setError("");
-    setParaphrasedText("");
-  };
-
-  const handleParaphrase = async () => {
-    setIsLoading(true);
-    setError("");
-    setParaphrasedText("");
-
-    try {
-      const response = await fetch("/api/paraphrase", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to paraphrase text");
-      }
-
-      console.log(`✅ Paraphrased by: ${data.provider}`);
-      setParaphrasedText(data.paraphrasedText);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "An unexpected error occurred",
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const isTextEmpty = text.trim().length === 0;
-  const isSuccess = !!paraphrasedText;
+  const {
+    text,
+    setText,
+    error,
+    isLoading,
+    paraphrasedText,
+    handlePasteText,
+    handleSampleText,
+    handleClearInput,
+    handleParaphrase,
+    isTextEmpty,
+    isSuccess,
+  } = useParaphrase();
 
   return (
     <PageContainer component="main">
