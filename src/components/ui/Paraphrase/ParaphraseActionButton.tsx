@@ -11,7 +11,7 @@ export const ParaphraseActionButton = styled(Button)<ButtonProps>(
     backgroundColor: theme.palette.common.white,
     border: `1px solid ${theme.palette.divider}`,
     textTransform: "none",
-    fontSize: theme.customTokens.typography.fontSize.md,
+    fontSize: theme.customTokens.typography.fontSize.sm,
     fontWeight: theme.customTokens.typography.fontWeight.medium,
     color: theme.palette.text.secondary,
     display: "flex",

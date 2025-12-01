@@ -3,16 +3,20 @@
 import { Box, type BoxProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-export const ParaphraseTextareaContainer = styled(Box)<BoxProps>(
-  ({ theme }) => ({
-    width: "100%",
-    minHeight: "336px",
-    backgroundColor: "#E8EAF6",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "relative",
-    borderBottom: `1px solid ${theme.customTokens.colors.neutral60}`,
-  }),
-);
+interface ParaphraseTextareaContainerProps extends BoxProps {
+  isEmpty?: boolean;
+}
+
+export const ParaphraseTextareaContainer = styled(
+  Box,
+)<ParaphraseTextareaContainerProps>(({ theme, isEmpty }) => ({
+  width: "100%",
+  minHeight: "336px",
+  backgroundColor: isEmpty ? "#E8EAF6" : "transparent",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  position: "relative",
+  borderBottom: `1px solid ${theme.customTokens.colors.neutral60}`,
+}));

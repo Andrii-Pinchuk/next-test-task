@@ -11,6 +11,15 @@ export interface ParaphraseResult {
 }
 
 /**
+ * Parameters for calling an AI provider
+ */
+interface ProviderCallParams {
+  provider: AIProvider;
+  text: string;
+  noTimeout?: boolean;
+}
+
+/**
  * Service for managing AI providers with race-based fallback strategy
  */
 export class AIService {
@@ -44,12 +53,18 @@ export class AIService {
   }
 
   /**
-   * Call a provider with timeout protection
+   * Call a provider with optional timeout protection
    */
-  private async callWithTimeout(
-    provider: AIProvider,
-    text: string,
-  ): Promise<ParaphraseResult> {
+  private async callProvider({
+    provider,
+    text,
+    noTimeout,
+  }: ProviderCallParams): Promise<ParaphraseResult> {
+    if (noTimeout) {
+      const result = await provider.paraphrase(text);
+      return { text: result, provider: provider.name };
+    }
+
     const timeoutMs = provider.timeout ?? AI_DEFAULTS.TIMEOUT_MS;
 
     const result = await Promise.race([
@@ -86,7 +101,7 @@ export class AIService {
     const provider = this.providers[0];
 
     try {
-      return await this.callWithTimeout(provider, text);
+      return await this.callProvider({ provider, text });
     } catch (error) {
       const errorMessage = this.getErrorMessage(error);
       throw new Error(`${provider.name} failed: ${errorMessage}`);
@@ -100,18 +115,20 @@ export class AIService {
     provider: AIProvider,
     text: string,
   ): Promise<ParaphraseResult> {
-    return await this.callWithTimeout(provider, text);
+    return await this.callProvider({ provider, text });
   }
 
   /**
    * Race all backup providers and return the first successful result
+   * Note: Backup providers race WITHOUT timeout - they wait indefinitely
+   * until one succeeds or all fail
    */
   private async raceBackupProviders(
     backupProviders: AIProvider[],
     text: string,
   ): Promise<ParaphraseResult> {
     const backupPromises = backupProviders.map((provider) =>
-      this.callWithTimeout(provider, text).catch((error) => {
+      this.callProvider({ provider, text, noTimeout: true }).catch((error) => {
         // Re-throw to be caught by Promise.race
         throw error;
       }),

@@ -21,6 +21,9 @@ export const PageContainer = styled(Box)<BoxProps>(({ theme }) => ({
     padding: theme.spacing(6),
   },
   [theme.breakpoints.up("lg")]: {
+    padding: theme.spacing(8),
+  },
+  [theme.breakpoints.up("xl")]: {
     padding: theme.spacing(16),
   },
 }));

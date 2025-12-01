@@ -42,8 +42,8 @@ export default function Home() {
         Transform your writing from good to great with our Paraphraser tool.
       </Subtitle>
 
-      <SectionContainer>
-        <ParaphraseTextareaContainer>
+      <SectionContainer component="section">
+        <ParaphraseTextareaContainer isEmpty={isTextEmpty}>
           {isTextEmpty && (
             <ParaphrasePlaceholderText>
               Enter text here or upload file to humanize it.
@@ -109,13 +109,18 @@ export default function Home() {
         {!isSuccess && (
           <ActionsContainer>
             {!isTextEmpty && !isLoading && (
-              <ClearButton onClick={handleClearInput} startIcon={<CloseIcon />}>
+              <ClearButton
+                onClick={handleClearInput}
+                startIcon={<CloseIcon />}
+                aria-label="Clear input"
+              >
                 Clear input
               </ClearButton>
             )}
             <SubmitButton
               disabled={isTextEmpty || isLoading}
               onClick={handleParaphrase}
+              aria-label="Start paraphrasing text"
             >
               {isLoading ? "Paraphrasing" : "Paraphrase"}
             </SubmitButton>
